@@ -125,7 +125,6 @@ export async function authenticate(
   prevState: string | undefined,
   formData: FormData
 ) {
-  console.log('entro al login, data:', formData)
   try {
     await signIn('credentials', Object.fromEntries(formData))
   } catch (error) {
