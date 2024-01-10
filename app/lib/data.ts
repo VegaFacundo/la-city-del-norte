@@ -7,9 +7,14 @@ import {
   LatestInvoiceRaw,
   User,
   Revenue,
+  rostiBaresRestaurantsFields,
+  baresSearchParamsType,
 } from './types/definitions'
 import { formatCurrency } from './utils'
 import { unstable_noStore as noStore } from 'next/cache'
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
 
 export async function fetchRevenue() {
   // Add noStore() here prevent the response from being cached.
@@ -223,4 +228,141 @@ export async function getUser(email: string) {
     console.error('Failed to fetch user:', error)
     throw new Error('Failed to fetch user.')
   }
+}
+
+//new ones
+
+export async function fetchRostyBarsRestaurant({
+  query,
+}: {
+  query: baresSearchParamsType
+}) {
+  try {
+    const data = await sql<rostiBaresRestaurantsFields>`
+      SELECT
+      id, name, street, street_number, description, phone, phone2
+      FROM rosty_bar_restaurants
+      ORDER BY name ASC
+    `
+    const response = data.rows.map(
+      ({
+        id,
+        name,
+        street,
+        street_number: streetNumber,
+        description,
+        phone,
+        phone2,
+      }) => {
+        return { id, name, street, streetNumber, description, phone, phone2 }
+      }
+    )
+
+    const rostyBarResta = response
+    return { rostyBarResta }
+  } catch (err) {
+    console.error('Database Error:', err)
+    throw new Error('Failed to fetch all customers.')
+  }
+}
+
+export async function getRostyBarsRestaurant({
+  query,
+}: {
+  query: baresSearchParamsType
+}) {
+  const rostyBarResta = await prisma.rosty_bar_restaurants.findMany({
+    where: query?.buscar
+      ? {
+          deleted: false,
+          OR: [
+            { name: { contains: query?.buscar, mode: 'insensitive' } },
+            {
+              foodTypes: {
+                some: {
+                  food_type: {
+                    name: { contains: query?.buscar, mode: 'insensitive' },
+                  },
+                },
+              },
+            },
+          ],
+        }
+      : { deleted: false },
+    include: {
+      foodTypes: {
+        where: {
+          deleted: false,
+        },
+        select: {
+          food_type: { select: { name: true } },
+        },
+      },
+    },
+    orderBy: { name: 'asc' },
+  })
+
+  return { rostyBarResta }
+}
+
+export const getRostyBarsRestaurantByID = async ({
+  idToSearch,
+}: {
+  idToSearch: string
+}) => {
+  const idParseIntToSearch = parseInt(idToSearch)
+  try {
+    const rostyBarResta = await prisma.rosty_bar_restaurants.findUnique({
+      where: { id: idParseIntToSearch },
+      include: {
+        foodTypes: {
+          select: {
+            id: true,
+            id_food_type: true,
+            id_restaurant: true,
+            deleted: true,
+            food_type: { select: { name: true } },
+          },
+        },
+      },
+    })
+    return { rostyBarResta }
+  } catch (e) {
+    return null
+  }
+}
+
+export async function getRostyBarsRestaurantAdmin({
+  query,
+}: {
+  query: baresSearchParamsType
+}) {
+  const rostyBarResta = await prisma.rosty_bar_restaurants.findMany({
+    where: query?.buscar
+      ? {
+          OR: [
+            { name: { contains: query?.buscar, mode: 'insensitive' } },
+            {
+              foodTypes: {
+                some: {
+                  food_type: {
+                    name: { contains: query?.buscar, mode: 'insensitive' },
+                  },
+                },
+              },
+            },
+          ],
+        }
+      : {},
+    include: {
+      foodTypes: {
+        select: {
+          food_type: { select: { name: true } },
+        },
+      },
+    },
+    orderBy: { name: 'asc' },
+  })
+
+  return { rostyBarResta }
 }

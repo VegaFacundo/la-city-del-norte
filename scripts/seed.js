@@ -1,176 +1,65 @@
-const { db } = require('@vercel/postgres')
-const {
-  invoices,
-  customers,
-  revenue,
-  users,
-} = require('../app/lib/placeholder-data.js')
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient()
 const bcrypt = require('bcrypt')
+const {
+  rostyBarsRestaruantes,
+  foodTypesSeed,
+} = require('../app/lib/placeholder-data.js')
 
-async function seedUsers(client) {
-  try {
-    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`
-    // Create the "invoices" table if it doesn't exist
-    const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS users (
-        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        email TEXT NOT NULL UNIQUE,
-        password TEXT NOT NULL
-      );
-    `
+const createUsers = async () => {
+  const users = await prisma.users.create({
+    data: {
+      name: 'Facundo',
+      email: 'vegafacundo187@gmail.com',
+      password: await bcrypt.hash('no', 10),
+    },
+  })
+  return users
+}
 
-    console.log(`Created "users" table`)
-
-    // Insert data into the "users" table
-    const insertedUsers = await Promise.all(
-      users.map(async (user) => {
-        const hashedPassword = await bcrypt.hash(user.password, 10)
-        return client.sql`
-        INSERT INTO users (id, name, email, password)
-        VALUES (${user.id}, ${user.name}, ${user.email}, ${hashedPassword})
-        ON CONFLICT (id) DO NOTHING;
-      `
+const createFoodTypes = async () => {
+  const insertFoodTypes = await Promise.all(
+    await foodTypesSeed.map(async (foodTypesSeedItem) => {
+      return await prisma.food_types.create({
+        data: { name: foodTypesSeedItem.name },
       })
-    )
-
-    console.log(`Seeded ${insertedUsers.length} users`)
-
-    return {
-      createTable,
-      users: insertedUsers,
-    }
-  } catch (error) {
-    console.error('Error seeding users:', error)
-    throw error
-  }
+    })
+  )
+  return insertFoodTypes
 }
 
-async function seedInvoices(client) {
-  try {
-    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`
-
-    // Create the "invoices" table if it doesn't exist
-    const createTable = await client.sql`
-    CREATE TABLE IF NOT EXISTS invoices (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    customer_id UUID NOT NULL,
-    amount INT NOT NULL,
-    status VARCHAR(255) NOT NULL,
-    date DATE NOT NULL
-  );
-`
-
-    console.log(`Created "invoices" table`)
-
-    // Insert data into the "invoices" table
-    const insertedInvoices = await Promise.all(
-      invoices.map(
-        (invoice) => client.sql`
-        INSERT INTO invoices (customer_id, amount, status, date)
-        VALUES (${invoice.customer_id}, ${invoice.amount}, ${invoice.status}, ${invoice.date})
-        ON CONFLICT (id) DO NOTHING;
-      `
-      )
-    )
-
-    console.log(`Seeded ${insertedInvoices.length} invoices`)
-
-    return {
-      createTable,
-      invoices: insertedInvoices,
-    }
-  } catch (error) {
-    console.error('Error seeding invoices:', error)
-    throw error
-  }
-}
-
-async function seedCustomers(client) {
-  try {
-    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`
-
-    // Create the "customers" table if it doesn't exist
-    const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS customers (
-        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL,
-        image_url VARCHAR(255) NOT NULL
-      );
-    `
-
-    console.log(`Created "customers" table`)
-
-    // Insert data into the "customers" table
-    const insertedCustomers = await Promise.all(
-      customers.map(
-        (customer) => client.sql`
-        INSERT INTO customers (id, name, email, image_url)
-        VALUES (${customer.id}, ${customer.name}, ${customer.email}, ${customer.image_url})
-        ON CONFLICT (id) DO NOTHING;
-      `
-      )
-    )
-
-    console.log(`Seeded ${insertedCustomers.length} customers`)
-
-    return {
-      createTable,
-      customers: insertedCustomers,
-    }
-  } catch (error) {
-    console.error('Error seeding customers:', error)
-    throw error
-  }
-}
-
-async function seedRevenue(client) {
-  try {
-    // Create the "revenue" table if it doesn't exist
-    const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS revenue (
-        month VARCHAR(4) NOT NULL UNIQUE,
-        revenue INT NOT NULL
-      );
-    `
-
-    console.log(`Created "revenue" table`)
-
-    // Insert data into the "revenue" table
-    const insertedRevenue = await Promise.all(
-      revenue.map(
-        (rev) => client.sql`
-        INSERT INTO revenue (month, revenue)
-        VALUES (${rev.month}, ${rev.revenue})
-        ON CONFLICT (month) DO NOTHING;
-      `
-      )
-    )
-
-    console.log(`Seeded ${insertedRevenue.length} revenue`)
-
-    return {
-      createTable,
-      revenue: insertedRevenue,
-    }
-  } catch (error) {
-    console.error('Error seeding revenue:', error)
-    throw error
-  }
+const createRestoBars = async () => {
+  const insertRostyBarsRestaruantes = await Promise.all(
+    await rostyBarsRestaruantes.map(async (rostyBarsRestaruant) => {
+      return await prisma.rosty_bar_restaurants.create({
+        data: {
+          name: rostyBarsRestaruant.name,
+          street: rostyBarsRestaruant.street,
+          street_number: rostyBarsRestaruant.street_number,
+          description: rostyBarsRestaruant.description,
+          work_time: rostyBarsRestaruant.workTime,
+          phone: rostyBarsRestaruant.phone,
+          phone2: rostyBarsRestaruant.phone2,
+        },
+      })
+    })
+  )
+  return insertRostyBarsRestaruantes
 }
 
 async function main() {
-  const client = await db.connect()
+  // const users =  await createUsers()
+  //const foodTypesCreated = await createFoodTypes()
+  //const RestoBarsCreated = await createRestoBars()
 
-  await seedUsers(client)
-  await seedCustomers(client)
-  await seedInvoices(client)
-  await seedRevenue(client)
-
-  await client.end()
+  console.log('end seed')
 }
-
-main().catch((err) => {
-  console.error('An error occurred while attempting to seed the database:', err)
-})
+main()
+  .then(async () => {
+    await prisma.$disconnect()
+  })
+  .catch(async (e) => {
+    console.error(e)
+    await prisma.$disconnect()
+    process.exit(1)
+  })

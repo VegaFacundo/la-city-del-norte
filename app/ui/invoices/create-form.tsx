@@ -1,6 +1,6 @@
 'use client'
 
-import { CustomerField } from '@/app/lib/types/definitions'
+import { rostiBaresRestaurantsFields } from '@/app/lib/types/definitions'
 import Link from 'next/link'
 import {
   CheckIcon,
@@ -12,7 +12,7 @@ import { Button } from '@/app/ui/button'
 import { createInvoice } from '@/app/lib/actions'
 import { useFormState } from 'react-dom'
 
-export default function Form({ customers }: { customers: CustomerField[] }) {
+export default function Form() {
   const initialState = { message: null, errors: {} }
   const [state, dispatch] = useFormState(createInvoice, initialState)
 
@@ -25,22 +25,6 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
             Choose customer
           </label>
           <div className="relative">
-            <select
-              id="customer"
-              name="customerId"
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              defaultValue=""
-              aria-describedby="customer-error"
-            >
-              <option value="" disabled>
-                Select a customer
-              </option>
-              {customers.map((customer) => (
-                <option key={customer.id} value={customer.id}>
-                  {customer.name}
-                </option>
-              ))}
-            </select>
             <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
           {state.errors?.customerId ? (

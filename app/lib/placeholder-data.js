@@ -2,12 +2,12 @@
 // https://nextjs.org/learn/dashboard-app/fetching-data
 const users = [
   {
-    id: '410544b2-4001-4271-9855-fec4b6a6442a',
-    name: 'User',
-    email: 'user@nextmail.com',
-    password: '123456',
+    id: '410564b4-8998-2232-5555-fec4b6a6442a',
+    name: 'Facundo',
+    email: 'vegafacundo187@gmail.com',
+    password: 'no',
   },
-];
+]
 
 const customers = [
   {
@@ -70,7 +70,7 @@ const customers = [
     email: 'balazs@orban.com',
     image_url: '/customers/balazs-orban.png',
   },
-];
+]
 
 const invoices = [
   {
@@ -163,7 +163,7 @@ const invoices = [
     status: 'paid',
     date: '2022-06-05',
   },
-];
+]
 
 const revenue = [
   { month: 'Jan', revenue: 2000 },
@@ -178,11 +178,55 @@ const revenue = [
   { month: 'Oct', revenue: 2800 },
   { month: 'Nov', revenue: 3000 },
   { month: 'Dec', revenue: 4800 },
-];
+]
+
+const rostyBarsRestaruantes = [
+  {
+    name: 'Dolores',
+    street: 'Ayacuho',
+    street_number: '22',
+    description: null,
+    workTime: 'Martes a domingo de 9 a 14 y 20 a 01',
+    phone: '223322112',
+    phone2: null,
+  },
+  {
+    name: 'Nico pizzas',
+    street: 'La madrid',
+    street_number: '150',
+    description: null,
+    workTime: 'Martes a domingo de 9 a 14',
+    phone: '111222333',
+    phone2: null,
+  },
+  {
+    name: 'Mini Bar la Casocha',
+    street: 'Roca',
+    street_number: '331',
+    description: null,
+    workTime: 'Martes a domingo de 20 a 01',
+    phone: '333111222',
+    phone2: null,
+  },
+]
+
+const foodTypesSeed = [
+  {
+    name: 'pizza',
+  },
+  {
+    name: 'sandwich',
+  },
+  {
+    name: 'patty',
+  },
+]
 
 module.exports = {
   users,
   customers,
   invoices,
   revenue,
-};
+  rostyBarsRestaruantes,
+  foodTypesSeed,
+}

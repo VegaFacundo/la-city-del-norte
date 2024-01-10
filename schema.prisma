@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider  = "postgresql"
+   extensions = [uuidOssp(map: "uuid-ossp")]
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+  
+}
+
+model rosty_bar_restaurants {
+  id            Int                         @id @default(autoincrement()) @unique
+  name          String                      @db.VarChar(255)
+  street        String                      @db.VarChar(255)
+  street_number String                      @db.VarChar(255)
+  description   String?                     @db.VarChar(511)
+  work_time     String?                     @db.VarChar(125)
+  phone         String?                     @db.VarChar(255)
+  phone2        String?                     @db.VarChar(255)
+  deleted       Boolean                     @default(false)
+  deleted_at    DateTime                    @default(now()) @db.Timestamp(6)  
+  foodTypes     rosty_bar_rest_types_food[]        
+      
+}
+
+model rosty_bar_rest_types_food {
+  id            Int                   @id @default(autoincrement()) @unique
+  id_restaurant Int                      
+  id_food_type  Int                    
+  deleted       Boolean               @default(false)
+  deleted_at    DateTime              @default(now()) @db.Timestamp(6) 
+  restaurant    rosty_bar_restaurants @relation(fields: [id_restaurant], references: [id])
+  food_type     food_types            @relation(fields: [id_food_type], references: [id])
+}
+
+model food_types {
+  id                        Int                         @id @default(autoincrement()) @unique
+  name                      String                      @db.VarChar(255)
+  deleted                   Boolean                     @default(false)
+  deleted_at                DateTime                    @default(now()) @db.Timestamp(6)     
+  restaurants               rosty_bar_rest_types_food[] 
+}
+
+model rest_attributes_types {
+  id         Int      @id @default(autoincrement()) @unique
+  name       String   @db.VarChar(255)
+  deleted    Boolean  @default(false)
+  deleted_at DateTime @default(now()) @db.Timestamp(6)
+}
+
+model users {
+  id       String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name     String @db.VarChar(255)
+  email    String @unique
+  password String
+  deleted       Boolean                     @default(false)
+  deleted_at    DateTime                    @default(now()) @db.Timestamp(6)  
+}

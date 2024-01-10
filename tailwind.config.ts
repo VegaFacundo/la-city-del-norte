@@ -1,6 +1,7 @@
-import type { Config } from 'tailwindcss';
+import type { Config } from 'tailwindcss'
+const withMT = require('@material-tailwind/html/utils/withMT')
 
-const config: Config = {
+const config: Config = withMT({
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -28,6 +29,6 @@ const config: Config = {
     },
   },
 
-  plugins: [require('@tailwindcss/forms')],
-};
-export default config;
+  plugins: [],
+})
+export default config

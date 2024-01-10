@@ -16,3 +16,11 @@ input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+:root {
+  --sm-breackpoin-tw: 640px;
+  --md-breackpoin-tw: 768px;
+  --lg-breackpoin-tw: 1024px;
+  --xl-breackpoin-tw: 1280px;
+  --2xl-breackpoin-tw: 1536px;
+}
