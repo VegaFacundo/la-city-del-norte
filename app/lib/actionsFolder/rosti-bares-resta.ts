@@ -241,3 +241,32 @@ export async function deleteReAddFoodTypeToRestoBarRestaurant(
   //revalidatePath(`/dashboard/bar-rostis-resta/${idFoodTypeRestaurant}/edit`)
   //redirect(`/dashboard/bar-rostis-resta/${idFoodTypeRestaurant}/edit`)
 }
+
+export async function deleteReAddRestoBarRestaurant(
+  idFoodTypeRestaurant: number
+) {
+  const existingEntry = await prisma.rosty_bar_restaurants.findUnique({
+    where: { id: idFoodTypeRestaurant },
+  })
+
+  if (!existingEntry) {
+    throw new Error(`Elemento con ID ${idFoodTypeRestaurant} no encontrado`)
+  }
+
+  try {
+    await prisma.rosty_bar_restaurants.update({
+      where: { id: idFoodTypeRestaurant },
+      data: {
+        deleted: !existingEntry.deleted,
+      },
+    })
+    return { message: 'ok' }
+  } catch (error) {
+    return {
+      message: 'Database Error: Failed to edit rosty/bar/restaurant.',
+    }
+  }
+
+  //revalidatePath(`/dashboard/bar-rostis-resta/${idFoodTypeRestaurant}/edit`)
+  //redirect(`/dashboard/bar-rostis-resta/${idFoodTypeRestaurant}/edit`)
+}

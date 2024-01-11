@@ -6,6 +6,7 @@ import {
   TrashIcon,
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
+import DeleteAddRBR from './deleteAddRBR'
 
 const ListSearchRBR = async ({ query }: { query: baresSearchParamsType }) => {
   const rostisbarsResponse = await getRostyBarsRestaurantAdmin({ query })
@@ -56,7 +57,10 @@ const ListSearchRBR = async ({ query }: { query: baresSearchParamsType }) => {
                               <Cog6ToothIcon className="w-5 h-5" />
                             </Link>
                             /
-                            <TrashIcon className="w-5 h-5" />
+                            <DeleteAddRBR
+                              idRestauarnt={rostyBarRestaItem.id}
+                              deleted={rostyBarRestaItem.deleted}
+                            />
                           </td>
                           <td className="whitespace-nowrap px-6 py-4 font-medium">
                             {rostyBarRestaItem.id}
