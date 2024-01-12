@@ -12,8 +12,24 @@ const createUsers = async () => {
       name: 'Facundo',
       email: 'vegafacundo187@gmail.com',
       password: await bcrypt.hash('no', 10),
+      user_type_id: 1,
     },
   })
+  return users
+}
+
+const createUsersTypes = async () => {
+  const users = await prisma.users_types.create({
+    data: {
+      name: 'admin',
+    },
+  })
+  const users2 = await prisma.users_types.create({
+    data: {
+      name: 'user',
+    },
+  })
+
   return users
 }
 
@@ -48,7 +64,9 @@ const createRestoBars = async () => {
 }
 
 async function main() {
-  // const users =  await createUsers()
+  //const users = await createUsers()
+  //const createUsersType = await createUsersTypes()
+
   //const foodTypesCreated = await createFoodTypes()
   //const RestoBarsCreated = await createRestoBars()
 

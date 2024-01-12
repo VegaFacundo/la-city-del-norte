@@ -3,6 +3,8 @@
 import { addFoodTypeToRestoBarRestaurant } from '@/app/lib/actionsFolder/rosti-bares-resta'
 import { Button } from '@/app/ui/button'
 import { useFormState } from 'react-dom'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 const AddFoodType = ({
   allFoodTypes,
@@ -22,7 +24,7 @@ const AddFoodType = ({
     message: null,
     errors: {},
   }
-
+  const router = useRouter()
   const addFoodTypeToRestoBarRestaurantWithRBRID =
     addFoodTypeToRestoBarRestaurant.bind(null, idToEdit)
 
@@ -30,6 +32,12 @@ const AddFoodType = ({
     addFoodTypeToRestoBarRestaurantWithRBRID,
     initialState
   )
+
+  useEffect(() => {
+    if (state?.message == 'ok') {
+      router.refresh()
+    }
+  }, [state, router])
 
   return (
     <form action={dispatch} className="flex flex-wrap">

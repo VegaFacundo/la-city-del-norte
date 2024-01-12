@@ -15,11 +15,11 @@ const Header = () => {
         </Link>
         <div className="mx-4">
           <h2 className="font-semibold sm:text-2xl">Añatuya</h2>
-          <p className="lg:hidden block">Restaurantes, Bares y Rotisería</p>
+          <p className="lg:hidden block">Restaurantes, Bares y Rotiserías</p>
         </div>
       </div>
       <div className="hidden lg:block grow">
-        Restaurantes, Bares y Rotisería
+        Restaurantes, Bares y Rotiserías
       </div>
     </header>
   )

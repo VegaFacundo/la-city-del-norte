@@ -11,14 +11,16 @@ export default async function Invoices({
 }) {
   return (
     <div className="w-full">
-      <div className="flex w-full items-center justify-between">
-        <h1 className={`text-2xl`}>Rostis, Bares y Restaurantes {'(RBR)'}</h1>
-      </div>
-      <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-        <SearchButton />
+      <div className="flex w-full items-center flex-wrap">
+        <h1 className={`text-2xl pr-2`}>
+          Rostis, Bares y Restaurantes {'(RBR)'}
+        </h1>
         <div>
           <Link href="/dashboard/bar-rostis-resta/create">Crear RBR</Link>
         </div>
+      </div>
+      <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
+        <SearchButton />
       </div>
 
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">

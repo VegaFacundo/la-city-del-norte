@@ -212,13 +212,40 @@ const rostyBarsRestaruantes = [
 
 const foodTypesSeed = [
   {
-    name: 'pizza',
+    name: 'Pizza',
   },
   {
-    name: 'sandwich',
+    name: 'Sandwich',
   },
   {
-    name: 'patty',
+    name: 'Empanadas',
+  },
+  {
+    name: 'Hamburguesa',
+  },
+  {
+    name: 'Al plato',
+  },
+  {
+    name: 'Asado',
+  },
+  {
+    name: 'Ensadala',
+  },
+  {
+    name: 'Tartas',
+  },
+  {
+    name: 'Tortas',
+  },
+  {
+    name: 'Meriendas/Desayunos',
+  },
+  {
+    name: 'Licuados',
+  },
+  {
+    name: 'Helados',
   },
 ]
 

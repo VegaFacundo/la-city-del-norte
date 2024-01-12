@@ -12,17 +12,18 @@ datasource db {
 }
 
 model rosty_bar_restaurants {
-  id            Int                         @id @default(autoincrement()) @unique
-  name          String                      @db.VarChar(255)
-  street        String                      @db.VarChar(255)
-  street_number String                      @db.VarChar(255)
-  description   String?                     @db.VarChar(511)
-  work_time     String?                     @db.VarChar(125)
-  phone         String?                     @db.VarChar(255)
-  phone2        String?                     @db.VarChar(255)
-  deleted       Boolean                     @default(false)
-  deleted_at    DateTime                    @default(now()) @db.Timestamp(6)  
-  foodTypes     rosty_bar_rest_types_food[]        
+  id              Int                         @id @default(autoincrement()) @unique
+  name            String                      @db.VarChar(255)
+  street          String                      @db.VarChar(255)
+  street_number   String                      @db.VarChar(255)
+  description     String?                     @db.VarChar(511)
+  work_time       String?                     @db.VarChar(125)
+  phone           String?                     @db.VarChar(255)
+  phone2          String?                     @db.VarChar(255)
+  deleted         Boolean                     @default(false)
+  deleted_at      DateTime                    @default(now()) @db.Timestamp(6)  
+  foodTypes       rosty_bar_rest_types_food[]        
+  restAtributtes  rosty_bar_rest_rest_attributes[]        
       
 }
 
@@ -44,18 +45,43 @@ model food_types {
   restaurants               rosty_bar_rest_types_food[] 
 }
 
+model rosty_bar_rest_rest_attributes {
+  id                        Int                     @id @default(autoincrement()) @unique
+  id_restaurant             Int                      
+  id_rest_attributes_types  Int                   
+  description               String?                 @db.VarChar(255)
+  observations              String?                 @db.VarChar(255)
+  deleted                   Boolean                 @default(false)
+  deleted_at                DateTime                @default(now()) @db.Timestamp(6) 
+  restaurant                rosty_bar_restaurants   @relation(fields: [id_restaurant], references: [id])
+  rest_attributes           rest_attributes_types   @relation(fields: [id_rest_attributes_types], references: [id])
+}
+
+
 model rest_attributes_types {
-  id         Int      @id @default(autoincrement()) @unique
-  name       String   @db.VarChar(255)
-  deleted    Boolean  @default(false)
-  deleted_at DateTime @default(now()) @db.Timestamp(6)
+  id          Int                               @id @default(autoincrement()) @unique
+  name        String                            @db.VarChar(255)
+  deleted     Boolean                           @default(false)
+  deleted_at  DateTime                          @default(now()) @db.Timestamp(6)
+  restaurants rosty_bar_rest_rest_attributes[] 
 }
 
 model users {
-  id       String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  name     String @db.VarChar(255)
-  email    String @unique
-  password String
-  deleted       Boolean                     @default(false)
-  deleted_at    DateTime                    @default(now()) @db.Timestamp(6)  
+  id            String      @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name          String      @db.VarChar(255)
+  email         String      @unique
+  password      String
+  user_type_id  Int       
+  deleted       Boolean     @default(false)
+  deleted_at    DateTime    @default(now()) @db.Timestamp(6)   
+  user_type     users_types @relation(fields: [user_type_id],references: [id])
+ 
+}
+
+model users_types {
+  id          Int       @id @default(autoincrement()) @unique
+  name        String    @db.VarChar(255) @unique
+  deleted     Boolean   @default(false)
+  deleted_at  DateTime  @default(now()) @db.Timestamp(6) 
+  users       users[]
 }
