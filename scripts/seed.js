@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 const {
   rostyBarsRestaruantes,
   foodTypesSeed,
+  restaAttributesSeed,
 } = require('../app/lib/placeholder-data.js')
 
 const createUsers = async () => {
@@ -44,6 +45,17 @@ const createFoodTypes = async () => {
   return insertFoodTypes
 }
 
+const createRestTypes = async () => {
+  const insertFoodTypes = await Promise.all(
+    await restaAttributesSeed.map(async (restTypesSeedItem) => {
+      return await prisma.rest_attributes_types.create({
+        data: { name: restTypesSeedItem.name },
+      })
+    })
+  )
+  return insertFoodTypes
+}
+
 const createRestoBars = async () => {
   const insertRostyBarsRestaruantes = await Promise.all(
     await rostyBarsRestaruantes.map(async (rostyBarsRestaruant) => {
@@ -69,6 +81,7 @@ async function main() {
 
   //const foodTypesCreated = await createFoodTypes()
   //const RestoBarsCreated = await createRestoBars()
+  //const RestoBarsCreated = await createRestTypes()
 
   console.log('end seed')
 }

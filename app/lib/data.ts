@@ -5,7 +5,6 @@ import {
   InvoiceForm,
   InvoicesTable,
   LatestInvoiceRaw,
-  User,
   Revenue,
   rostiBaresRestaurantsFields,
   baresSearchParamsType,
@@ -220,16 +219,6 @@ export async function fetchFilteredCustomers(query: string) {
   }
 }
 
-export async function getUser(email: string) {
-  try {
-    const user = await sql`SELECT * from USERS where email=${email}`
-    return user.rows[0] as User
-  } catch (error) {
-    console.error('Failed to fetch user:', error)
-    throw new Error('Failed to fetch user.')
-  }
-}
-
 //new ones
 
 export async function fetchRostyBarsRestaurant({
@@ -322,6 +311,14 @@ export const getRostyBarsRestaurantByID = async ({
             id_restaurant: true,
             deleted: true,
             food_type: { select: { name: true } },
+          },
+        },
+        restAtributtes: {
+          select: {
+            id: true,
+            observations: true,
+            value: true,
+            deleted: true,
           },
         },
       },

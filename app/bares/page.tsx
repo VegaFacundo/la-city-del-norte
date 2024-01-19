@@ -6,7 +6,7 @@ import { Suspense } from 'react'
 import DashboardSkeleton from '../ui/skeletons'
 
 export const metadata: Metadata = {
-  title: 'Añatuya Info Bares',
+  title: 'Añatuya Bares',
   description: 'Añatuya bares de la ciudad',
 }
 

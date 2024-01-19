@@ -1,10 +1,6 @@
 import { getAllFoodTypes } from '@/app/lib/actionsFolder/rosti-bares-resta'
 import AddFoodType from './addFoodType'
-import {
-  AdjustmentsHorizontalIcon,
-  Cog6ToothIcon,
-  TrashIcon,
-} from '@heroicons/react/24/outline'
+import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
 import DeleteAddFoodType from './deleteAddFoodType'
 
 const AddDeletedFoodTypesRBR = async ({

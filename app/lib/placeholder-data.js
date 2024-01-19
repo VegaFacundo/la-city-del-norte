@@ -249,6 +249,21 @@ const foodTypesSeed = [
   },
 ]
 
+const restaAttributesSeed = [
+  {
+    name: 'Delivery',
+  },
+  {
+    name: 'Instagram',
+  },
+  {
+    name: 'Facebook',
+  },
+  {
+    name: 'Whatsapp',
+  },
+]
+
 module.exports = {
   users,
   customers,
@@ -256,4 +271,5 @@ module.exports = {
   revenue,
   rostyBarsRestaruantes,
   foodTypesSeed,
+  restaAttributesSeed,
 }

@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { PrismaClient } from '@prisma/client'
+import { auth } from '@/auth'
 
 const prisma = new PrismaClient()
 
@@ -55,6 +56,17 @@ export async function createRestoBarRestaurant(
     phone2: formData.get('phone2'),
   })
 
+  try {
+    const sessionAuth = await auth()
+    if ((sessionAuth?.user as any).userType !== 'admin') {
+      revalidatePath('/dashboard/bar-rostis-resta')
+      redirect('/dashboard/bar-rostis-resta')
+      return {}
+    }
+  } catch (e) {
+    console.log('session error', e)
+  }
+
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
@@ -96,6 +108,18 @@ export const getAllFoodTypes = async () => {
     return { allFodTypes }
   } catch (error) {
     return { allFodTypes: [] }
+  }
+}
+
+export const getAllAttributesTypes = async () => {
+  try {
+    const allRestAttributesTypes = await prisma.rest_attributes_types.findMany({
+      where: { deleted: false },
+      orderBy: { id: 'asc' },
+    })
+    return { allRestAttributesTypes }
+  } catch (error) {
+    return { allRestAttributesTypes: [] }
   }
 }
 
@@ -269,4 +293,117 @@ export async function deleteReAddRestoBarRestaurant(
 
   //revalidatePath(`/dashboard/bar-rostis-resta/${idFoodTypeRestaurant}/edit`)
   //redirect(`/dashboard/bar-rostis-resta/${idFoodTypeRestaurant}/edit`)
+}
+
+const RostiBarRestaurantAddAttributeTypeSchema = z.object({
+  id_rest_attributes_types: z.string(),
+  value: z.string(),
+  observations: z.string().nullable(),
+})
+
+export type StateAddAttributeType =
+  | {
+      errors?: {
+        id_rest_attributes_types?: string[]
+        id_restaurant?: string[]
+        value?: string[]
+      }
+      message?: string | null
+    }
+  | undefined
+
+export async function addAttritubeToRestoBarRestaurant(
+  idRestaurant: string,
+  prevState: StateAddAttributeType,
+  formData: FormData
+) {
+  const idRestaurantParseInt = parseInt(idRestaurant)
+
+  const validatedFields = RostiBarRestaurantAddAttributeTypeSchema.safeParse({
+    id_rest_attributes_types: formData.get('id_rest_attributes_types'),
+    value: formData.get('value'),
+  })
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields.',
+    }
+  }
+
+  const { id_rest_attributes_types, value, observations } = validatedFields.data
+  const idAttributeTypeParseInt = parseInt(id_rest_attributes_types)
+
+  const existingEntry = await prisma.rosty_bar_rest_rest_attributes.findMany({
+    where: {
+      id_restaurant: idRestaurantParseInt,
+      id_rest_attributes_types: idAttributeTypeParseInt,
+    },
+  })
+
+  if (existingEntry.length > 0) {
+    return {
+      message: 'Ya se encuentra el attributo',
+    }
+  }
+
+  try {
+    await prisma.rosty_bar_rest_rest_attributes.create({
+      data: {
+        id_rest_attributes_types: idAttributeTypeParseInt,
+        id_restaurant: idRestaurantParseInt,
+        value,
+        observations,
+      },
+    })
+    return {
+      message: 'ok',
+    }
+  } catch (error) {
+    return {
+      message: 'error en el servidor',
+    }
+  }
+}
+
+const RostiBarRestaurantAttributeCreateSchema =
+  RostiBarRestaurantAddAttributeTypeSchema.omit({
+    id_rest_attributes_types: true,
+  })
+
+export async function editRestoBarRestaurantAttribute(
+  rbrAttributeID: string,
+  prevState: State,
+  formData: FormData
+) {
+  const validatedFields = RostiBarRestaurantAttributeCreateSchema.safeParse({
+    value: formData.get('value'),
+  })
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields.',
+    }
+  }
+
+  const { value, observations } = validatedFields.data
+
+  const idToUpdateRBRAttribute = parseInt(rbrAttributeID)
+  try {
+    await prisma.rosty_bar_rest_rest_attributes.update({
+      where: { id: idToUpdateRBRAttribute },
+      data: {
+        value,
+        observations,
+      },
+    })
+  } catch (error) {
+    return {
+      message: 'Database Error: Failed to Create rosty/bar/restaurant.',
+    }
+  }
+
+  revalidatePath('/dashboard/bar-rostis-resta')
+  redirect('/dashboard/bar-rostis-resta')
 }
