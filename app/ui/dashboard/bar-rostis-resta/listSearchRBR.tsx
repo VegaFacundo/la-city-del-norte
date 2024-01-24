@@ -7,6 +7,7 @@ import {
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import DeleteAddRBR from './deleteAddRBR'
+import ButtonIcon from '../../commons/ButtonIcon'
 
 const ListSearchRBR = async ({ query }: { query: baresSearchParamsType }) => {
   const rostisbarsResponse = await getRostyBarsRestaurantAdmin({ query })
@@ -51,12 +52,17 @@ const ListSearchRBR = async ({ query }: { query: baresSearchParamsType }) => {
                           className="border-b dark:border-neutral-500"
                         >
                           <td className="whitespace-nowrap px-6 py-4 font-medium flex justify-between">
-                            <Link
-                              href={`/dashboard/bar-rostis-resta/${rostyBarRestaItem.id}/edit`}
-                            >
-                              <Cog6ToothIcon className="w-5 h-5" />
-                            </Link>
-                            /
+                            <ButtonIcon>
+                              <Link
+                                href={`/dashboard/bar-rostis-resta/${rostyBarRestaItem.id}/edit`}
+                              >
+                                <Cog6ToothIcon
+                                  className="w-5 h-5"
+                                  color="black"
+                                />
+                              </Link>
+                            </ButtonIcon>
+
                             <DeleteAddRBR
                               idRestauarnt={rostyBarRestaItem.id}
                               deleted={rostyBarRestaItem.deleted}

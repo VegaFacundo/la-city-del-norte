@@ -1,6 +1,6 @@
 'use client'
 
-import { addFoodTypeToRestoBarRestaurant } from '@/app/lib/actionsFolder/rosti-bares-resta'
+import { addAttritubeToRestoBarRestaurant } from '@/app/lib/actionsFolder/rosti-bares-resta'
 import { Button } from '@/app/ui/button'
 import { useFormState } from 'react-dom'
 import { useRouter } from 'next/navigation'
@@ -24,11 +24,11 @@ const AddRestAttributeTypes = ({
     errors: {},
   }
   const router = useRouter()
-  const addFoodTypeToRestoBarRestaurantWithRBRID =
-    addFoodTypeToRestoBarRestaurant.bind(null, idToEdit)
+  const addAttritubeToRestoBarRestaurantByID =
+    addAttritubeToRestoBarRestaurant.bind(null, idToEdit)
 
   const [state, dispatch] = useFormState(
-    addFoodTypeToRestoBarRestaurantWithRBRID,
+    addAttritubeToRestoBarRestaurantByID,
     initialState
   )
 
@@ -63,7 +63,7 @@ const AddRestAttributeTypes = ({
         </label>
       </div>
       <div className="pl-4">
-        <Button type="submit">Agregar tipo de comida</Button>
+        <Button type="submit">Agregar attributo</Button>
       </div>
       <div className="w-full pt-2 flex">
         <div className="w-72 pl-2">

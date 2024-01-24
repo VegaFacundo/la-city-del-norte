@@ -298,7 +298,7 @@ export async function deleteReAddRestoBarRestaurant(
 const RostiBarRestaurantAddAttributeTypeSchema = z.object({
   id_rest_attributes_types: z.string(),
   value: z.string(),
-  observations: z.string().nullable(),
+  observations: z.string().nullable().optional(),
 })
 
 export type StateAddAttributeType =
@@ -330,7 +330,6 @@ export async function addAttritubeToRestoBarRestaurant(
       message: 'Missing Fields.',
     }
   }
-
   const { id_rest_attributes_types, value, observations } = validatedFields.data
   const idAttributeTypeParseInt = parseInt(id_rest_attributes_types)
 
@@ -371,9 +370,19 @@ const RostiBarRestaurantAttributeCreateSchema =
     id_rest_attributes_types: true,
   })
 
+export type StateEditAttributeType =
+  | {
+      errors?: {
+        value?: string[]
+        observations?: string[]
+      }
+      message?: string | null
+    }
+  | undefined
+
 export async function editRestoBarRestaurantAttribute(
-  rbrAttributeID: string,
-  prevState: State,
+  rbrAttributeID: number,
+  prevState: StateEditAttributeType,
   formData: FormData
 ) {
   const validatedFields = RostiBarRestaurantAttributeCreateSchema.safeParse({
@@ -389,21 +398,23 @@ export async function editRestoBarRestaurantAttribute(
 
   const { value, observations } = validatedFields.data
 
-  const idToUpdateRBRAttribute = parseInt(rbrAttributeID)
   try {
     await prisma.rosty_bar_rest_rest_attributes.update({
-      where: { id: idToUpdateRBRAttribute },
+      where: { id: rbrAttributeID },
       data: {
         value,
         observations,
       },
     })
+    return {
+      message: 'ok',
+    }
   } catch (error) {
     return {
-      message: 'Database Error: Failed to Create rosty/bar/restaurant.',
+      message: 'Database Error: Failed to edit attribute.',
     }
   }
 
-  revalidatePath('/dashboard/bar-rostis-resta')
-  redirect('/dashboard/bar-rostis-resta')
+  //revalidatePath('/dashboard/bar-rostis-resta')
+  //redirect('/dashboard/bar-rostis-resta')
 }

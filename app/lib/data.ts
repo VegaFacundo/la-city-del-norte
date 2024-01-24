@@ -319,6 +319,7 @@ export const getRostyBarsRestaurantByID = async ({
             observations: true,
             value: true,
             deleted: true,
+            rest_attributes: { select: { name: true } },
           },
         },
       },

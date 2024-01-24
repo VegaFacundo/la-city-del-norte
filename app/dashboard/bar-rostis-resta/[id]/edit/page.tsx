@@ -13,7 +13,6 @@ const EditRestaurantBarRosti = async ({
   const RestoBarRostiData = await getRostyBarsRestaurantByID({
     idToSearch: params.id,
   })
-
   if (!RestoBarRostiData) {
     notFound()
   }
@@ -28,10 +27,12 @@ const EditRestaurantBarRosti = async ({
       </Suspense>
 
       <Suspense fallback={<div>Cargando tipos de comida asociados...</div>}>
-        <AddDeletedFoodTypesRBR
-          foodTypesAsigned={RestoBarRostiData.rostyBarResta?.foodTypes}
-          idToEdit={params.id}
-        />
+        <div className="py-4">
+          <AddDeletedFoodTypesRBR
+            foodTypesAsigned={RestoBarRostiData.rostyBarResta?.foodTypes}
+            idToEdit={params.id}
+          />
+        </div>
       </Suspense>
       <Suspense fallback={<div>Cargando tipos de atributos...</div>}>
         <div className="py-4">
