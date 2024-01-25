@@ -11,13 +11,14 @@ import InputForm from '../../commons/InputForm'
 import { editRestoBarRestaurantAttribute } from '@/app/lib/actionsFolder/rosti-bares-resta'
 import { useFormState } from 'react-dom'
 import { useRouter } from 'next/navigation'
+import DeleteReAddAttributeRBR from './deleteReAddAttributeRBR'
 
 const RestAttributeRowTable = ({
-  foodTypesAsignedItem,
+  AttributeRBRAsignedItem,
   idForm,
   restaurantID,
 }: {
-  foodTypesAsignedItem: {
+  AttributeRBRAsignedItem: {
     id: number
     value: string
     observations: string | null
@@ -35,7 +36,7 @@ const RestAttributeRowTable = ({
   const router = useRouter()
 
   const editRestoBarRestaurantAttributeByID =
-    editRestoBarRestaurantAttribute.bind(null, foodTypesAsignedItem.id)
+    editRestoBarRestaurantAttribute.bind(null, AttributeRBRAsignedItem.id)
 
   const [state, dispatch] = useFormState(
     editRestoBarRestaurantAttributeByID,
@@ -59,9 +60,9 @@ const RestAttributeRowTable = ({
       <td className="whitespace-nowrap px-6 py-4 font-medium flex justify-around items-center">
         {!isEditing && (
           <div className="flex justify-around items-center w-full">
-            <DeleteAddFoodType
-              idFoodType={foodTypesAsignedItem.id}
-              deleted={foodTypesAsignedItem.deleted}
+            <DeleteReAddAttributeRBR
+              idAttributeRBR={AttributeRBRAsignedItem.id}
+              deleted={AttributeRBRAsignedItem.deleted}
             />
             <div className="px-2">|</div>
             <ButtonIcon onClick={handleClickEdit}>
@@ -83,17 +84,17 @@ const RestAttributeRowTable = ({
         )}
       </td>
       <td className="whitespace-nowrap px-6 py-4 font-medium">
-        {foodTypesAsignedItem.rest_attributes.name}
+        {AttributeRBRAsignedItem.rest_attributes.name}
       </td>
       <td className="whitespace-nowrap px-6 py-4 font-medium">
-        {!isEditing && foodTypesAsignedItem.value}
+        {!isEditing && AttributeRBRAsignedItem.value}
         {isEditing && (
           <div className="w-full">
             <InputForm
               maxWidth="15rem"
               label="Valor"
               inputName="value"
-              defaultValue={foodTypesAsignedItem.value}
+              defaultValue={AttributeRBRAsignedItem.value}
               idForm={idForm}
             />
             {state?.errors?.value}
@@ -101,14 +102,14 @@ const RestAttributeRowTable = ({
         )}
       </td>
       <td className="whitespace-nowrap px-6 py-4 font-medium">
-        {!isEditing && foodTypesAsignedItem.observations}
+        {!isEditing && AttributeRBRAsignedItem.observations}
         {isEditing && (
           <div className="w-full">
             <InputForm
               maxWidth="15rem"
               label="Observaciones"
               inputName="observations"
-              defaultValue={foodTypesAsignedItem.observations ?? ''}
+              defaultValue={AttributeRBRAsignedItem.observations ?? ''}
               idForm={idForm}
             />
             {state?.errors?.observations}

@@ -42,16 +42,18 @@ const RestAttributeTable = ({
               </thead>
               <tbody>
                 {restAttributesAsigned &&
-                  restAttributesAsigned.map((foodTypesAsignedItem, index) => {
-                    return (
-                      <RestAttributeRowTable
-                        foodTypesAsignedItem={foodTypesAsignedItem}
-                        idForm={`rosty-dashboard-${index}-${foodTypesAsignedItem.rest_attributes.name}`}
-                        key={`rosty-dashboard-${index}-${foodTypesAsignedItem.id}`}
-                        restaurantID={idToEdit}
-                      />
-                    )
-                  })}
+                  restAttributesAsigned.map(
+                    (AttributeRBRAsignedItem, index) => {
+                      return (
+                        <RestAttributeRowTable
+                          AttributeRBRAsignedItem={AttributeRBRAsignedItem}
+                          idForm={`rosty-dashboard-${index}-${AttributeRBRAsignedItem.rest_attributes.name}`}
+                          key={`rosty-dashboard-${index}-${AttributeRBRAsignedItem.id}`}
+                          restaurantID={idToEdit}
+                        />
+                      )
+                    }
+                  )}
               </tbody>
             </table>
           </div>

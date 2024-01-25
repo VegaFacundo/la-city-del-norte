@@ -41,7 +41,7 @@ const AddFoodType = ({
 
   return (
     <form action={dispatch} className="flex flex-wrap">
-      <div className="relative h-10 w-72 min-w-[200px]">
+      <div className="relative w-72 min-w-[200px] pb-2">
         <select
           className="peer h-full w-full rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 empty:!bg-gray-900 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
           name="id_food_type"

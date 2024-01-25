@@ -61,10 +61,10 @@ export async function createRestoBarRestaurant(
     if ((sessionAuth?.user as any).userType !== 'admin') {
       revalidatePath('/dashboard/bar-rostis-resta')
       redirect('/dashboard/bar-rostis-resta')
-      return {}
     }
   } catch (e) {
-    console.log('session error', e)
+    revalidatePath('/dashboard/bar-rostis-resta')
+    redirect('/dashboard/bar-rostis-resta')
   }
 
   if (!validatedFields.success) {
@@ -417,4 +417,34 @@ export async function editRestoBarRestaurantAttribute(
 
   //revalidatePath('/dashboard/bar-rostis-resta')
   //redirect('/dashboard/bar-rostis-resta')
+}
+
+export async function deleteReAddAttributeRestoBarRestaurant(
+  idAttributeRestaurant: number
+) {
+  try {
+    const existingEntry =
+      await prisma.rosty_bar_rest_rest_attributes.findUnique({
+        where: { id: idAttributeRestaurant },
+      })
+
+    if (!existingEntry) {
+      throw new Error(`Elemento con ID ${idAttributeRestaurant} no encontrado`)
+    }
+
+    await prisma.rosty_bar_rest_rest_attributes.update({
+      where: { id: idAttributeRestaurant },
+      data: {
+        deleted: !existingEntry.deleted,
+      },
+    })
+    return { message: 'ok' }
+  } catch (error) {
+    return {
+      message: 'Database Error: Failed to edit rosty/bar/restaurant.',
+    }
+  }
+
+  //revalidatePath(`/dashboard/bar-rostis-resta/${idFoodTypeRestaurant}/edit`)
+  //redirect(`/dashboard/bar-rostis-resta/${idFoodTypeRestaurant}/edit`)
 }
