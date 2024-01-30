@@ -105,3 +105,19 @@ export type rostiBaresRestaurantsFields = {
   deleted: boolean
   deleted_at: string
 }
+
+export type restAttributesBares = {
+  value: string
+  observations: string | null
+  rest_attributes: { name: string }
+}
+
+export type foodTypesBares = {
+  food_type: { name: string }
+}
+
+export interface rostyBarRestaResponseBares
+  extends rostiBaresRestaurantsFields {
+  restAtributtes: restAttributesBares[]
+  foodTypes: foodTypesBares[]
+}

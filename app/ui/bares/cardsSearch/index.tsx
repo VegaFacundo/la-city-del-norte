@@ -1,15 +1,17 @@
 import { baresSearchParamsType } from '@/app/lib/types/definitions'
 import Image from 'next/image'
 import styles from '@/app/ui/bares/cardsSearch/cardsSearch.module.css'
-import WhatsApp from '@/app/ui/bares/cardsSearch/badgets/whatsapp'
 import { getRostyBarsRestaurant } from '@/app/lib/data'
 import IconLocation from './badgets/iconLocation'
 import WorkTime from './badgets/workTime'
 import BusinessTittleCard from './businessTittleCard'
 import FoodTypesBadgets from './badgets/foodTypesBadgets'
+import PhoneSection from './badgets/phoneSection'
+import BadgetsRBR from './badgets/badgetsRBR'
 
 const CardsSearch = async ({ query }: { query: baresSearchParamsType }) => {
   const rostisbarsResponse = await getRostyBarsRestaurant({ query })
+
   return (
     <section className="flex">
       <div className="basis-full md:basis-10/12	mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 p-4 place-content-center">
@@ -25,12 +27,7 @@ const CardsSearch = async ({ query }: { query: baresSearchParamsType }) => {
                     <div className="z-10 p-6 h-full flex-grow flex flex-col justify-between">
                       <div>
                         <BusinessTittleCard businessName={rostyBarResta.name} />
-                        <div className=" pl-1 pt-2">
-                          <WhatsApp phone={rostyBarResta.phone} />
-                          {/* <div className="px-2">
-                            <Instagram instagranLink="https://www.instagram.com/" />
-                          </div> */}
-                        </div>
+                        <PhoneSection rostyBarResta={rostyBarResta} />
                         <div className="py-1 pt-1">
                           <IconLocation
                             street={rostyBarResta.street}
@@ -38,9 +35,7 @@ const CardsSearch = async ({ query }: { query: baresSearchParamsType }) => {
                           />
                         </div>
                         <div className="pl-1">
-                          <FoodTypesBadgets
-                            foodTypes={rostyBarResta.foodTypes}
-                          />
+                          <BadgetsRBR rostyBarResta={rostyBarResta} />
                         </div>
                       </div>
                       <div className="pl-1">

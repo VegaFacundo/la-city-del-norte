@@ -3,7 +3,7 @@ import styles from '@/app/ui/bares/cardsSearch/badgets/badgets.module.css'
 const WhatsApp = ({ phone }: { phone: string }) => {
   return (
     <a
-      href={`https://api.whatsapp.com/send?phone=${phone}&text=Hola, vi tu local en https://www.lacitydelnorte.vercel.app/bares, me gustaria hacer un pedido`}
+      href={`https://api.whatsapp.com/send?phone=+54${phone}&text=Hola, vi tu local en lacitydelnorte.vercel.app/bares, me gustaria hacer un pedido`}
       target="_blanc"
       className="flex  items-center w-auto"
     >

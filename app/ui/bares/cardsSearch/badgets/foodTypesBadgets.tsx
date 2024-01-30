@@ -11,6 +11,7 @@ import CoffeSVG from '@/public/images/bares/coffe.svg'
 import CupSVG from '@/public/images/bares/cup.svg'
 import IceCreamSVG from '@/public/images/bares/ice-cream-cone.svg'
 import Image from 'next/image'
+import { foodTypesBares } from '@/app/lib/types/definitions'
 
 const foodTypesSeed: { [key: string]: { name: string; icon: any } } = {
   Pizza: {
@@ -63,13 +64,9 @@ const foodTypesSeed: { [key: string]: { name: string; icon: any } } = {
   },
 }
 
-const FoodTypesBadgets = ({
-  foodTypes,
-}: {
-  foodTypes: { food_type: { name: string } }[]
-}) => {
+const FoodTypesBadgets = ({ foodTypes }: { foodTypes: foodTypesBares[] }) => {
   if (!foodTypes || foodTypes.length == 0) {
-    return null
+    return false
   }
   return (
     <div className="flex">

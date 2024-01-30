@@ -287,6 +287,16 @@ export async function getRostyBarsRestaurant({
           food_type: { select: { name: true } },
         },
       },
+      restAtributtes: {
+        where: {
+          deleted: false,
+        },
+        select: {
+          value: true,
+          observations: true,
+          rest_attributes: { select: { name: true } },
+        },
+      },
     },
     orderBy: { name: 'asc' },
   })
