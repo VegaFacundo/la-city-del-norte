@@ -1,5 +1,3 @@
-## Next.js App Router Course - Starter
+Personal project to facilitate communication between the population and services in my hometown. The purpose of the webpage is informational. Abrazo!
 
-This is the starter template for the Next.js App Router Course. It contains the starting code for the dashboard application.
-
-For more information, see the [course curriculum](https://nextjs.org/learn) on the Next.js Website.
+[Web App](https://lacitydelnorte.vercel.app/)
